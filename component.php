@@ -5,7 +5,7 @@
  * @package WP-Theme-Components
  * @subpackage classic-block-wrapper
  * @author Cameron Jones
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 namespace WP_Theme_Components\Classic_Block_Wrapper;
@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function wrap_classic_posts( $block_content, $block ) {
-	if ( $this->use_block_editor_for_post_type( get_post_type() ) ) {
+	if ( use_block_editor_for_post_type( get_post_type() ) ) {
 		if ( is_null( $block['blockName'] ) && ! empty( trim( $block_content ) ) ) {
 			$block_content = sprintf(
 				'<div class="wp-block-classic">%1$s</div>',
@@ -40,3 +40,15 @@ function wrap_classic_posts( $block_content, $block ) {
 }
 
 add_filter( 'render_block', __NAMESPACE__ . '\\wrap_classic_posts', 10, 2 );
+
+/**
+ * Return whether a post type is compatible with the block editor.
+ *
+ * @since 1.0.1
+ * @param string $post_type The post type.
+ * @return bool
+ */
+function use_block_editor_for_post_type( $post_type ) {
+	require_once ABSPATH . 'wp-admin/includes/post.php';
+	return \use_block_editor_for_post_type( $post_type );
+}
